@@ -3,6 +3,7 @@ import styled, { ThemeProvider } from "styled-components";
 import { router } from "./routes/router";
 import { createGlobalStyle } from "styled-components";
 import { theme } from "./theme";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 const GlobalStyles = createGlobalStyle`
   
@@ -71,6 +72,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <GlobalStyles />
         <RouterProvider router={router} />
+        <ReactQueryDevtools initialIsOpen={true} />
       </ThemeProvider>
     </>
   );

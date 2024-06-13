@@ -15,7 +15,7 @@ export const router = createBrowserRouter([
         element: <Coins />,
       },
       {
-        path: "coin/:coinId",
+        path: "/:coinId",
         element: <Coin />,
         children: [
           {
