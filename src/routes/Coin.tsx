@@ -1,11 +1,46 @@
 import { useEffect, useState } from "react";
-import { Outlet, useLocation, useParams } from "react-router-dom";
+import {
+  Link,
+  Outlet,
+  useLocation,
+  useMatch,
+  useMatches,
+  useParams,
+} from "react-router-dom";
 import { styled } from "styled-components";
 
 const Container = styled.div`
   padding: 0px 20px;
   max-width: 480px;
   margin: 0 auto;
+`;
+const Tabs = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+`;
+
+const Tab = styled.div<{ isActice: boolean }>`
+  padding: 10px 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border-radius: 15px;
+  text-align: center;
+  font-size: 26px;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: ${(props) =>
+    props.isActice ? props.theme.accentColor : props.theme.textColor};
+  a {
+    display: block;
+  }
+  &:hover {
+    a {
+      color: ${(props) => props.theme.accentColor};
+    }
+  }
 `;
 
 const CoinInfo = styled.div`
@@ -110,21 +145,25 @@ function Coin() {
   const [info, setInfo] = useState<InfoData>();
   const [priceInfo, setPriceInfo] = useState<PriceData>();
   const { state } = useLocation();
-  useEffect(() => {
-    (async () => {
-      const infoData = await (
-        await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-      ).json();
-      const priceData = await (
-        await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-      ).json();
+  const {
+    2: { pathname },
+  } = useMatches();
 
-      setInfo(infoData);
-      setPriceInfo(priceData);
-      setLoading(false);
-    })();
-  }, []);
-  console.log();
+  // useEffect(() => {
+  //   (async () => {
+  //     const infoData = await (
+  //       await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
+  //     ).json();
+  //     const priceData = await (
+  //       await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
+  //     ).json();
+
+  //     setInfo(infoData);
+  //     setPriceInfo(priceData);
+  //     setLoading(false);
+  //   })();
+  // }, []);
+
   return (
     <Container>
       <Header>
@@ -132,7 +171,7 @@ function Coin() {
           {state?.name ? state.name : loading ? "Loading..." : info?.name}
         </Title>
       </Header>
-      {loading ? (
+      {!loading ? (
         <Loading>Loading...</Loading>
       ) : (
         <>
@@ -161,6 +200,14 @@ function Coin() {
               <span>{priceInfo?.max_supply}</span>
             </OverviewItem>
           </CoinInfo>
+          <Tabs>
+            <Tab isActice={pathname.split("/").pop() === "price"}>
+              <Link to={`price`}>Price</Link>
+            </Tab>
+            <Tab isActice={pathname.split("/").pop() === "chart"}>
+              <Link to={`chart`}>Chart</Link>
+            </Tab>
+          </Tabs>
           <Outlet />
         </>
       )}
