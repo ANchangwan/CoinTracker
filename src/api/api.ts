@@ -15,3 +15,10 @@ export function fetchCoinTickers(coinId: string | undefined) {
     response.json()
   );
 }
+
+export default function fetchCoinsHistory(coinId: string | undefined) {
+
+  return fetch(
+    `https://ohlcv-api.nomadcoders.workers.dev/?coinId=${coinId}`
+  ).then((response) => response.json());
+}

@@ -5,10 +5,12 @@ import {
   Outlet,
   useLocation,
   useMatch,
+  useNavigate,
   useParams,
 } from "react-router-dom";
 import { styled } from "styled-components";
 import { fetchCoinInfo, fetchCoinTickers } from "../api/api";
+import { Btn } from "../App";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -86,6 +88,19 @@ const Title = styled.h1`
   color: ${(props) => props.theme.accentColor};
 `;
 
+const Back = styled.button`
+  position: relative;
+  background-color: ${(props) => props.theme.bgColor};
+  color: ${(props) => props.theme.textColor};
+  padding: 10px 40px;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 15px;
+  margin: 20px;
+  right: -224%;
+  top: -30px;
+`;
+
 interface RouteParams {
   [key: string]: string | undefined;
 }
@@ -151,6 +166,7 @@ interface PriceData {
 function Coin() {
   const { coinId } = useParams<RouteParams>();
   const { state } = useLocation();
+  const route = useNavigate();
   const chartMatch = useMatch("/:coinId/chart");
   const priceMatch = useMatch("/:coinId/price");
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
@@ -161,11 +177,16 @@ function Coin() {
     ["tickers", coinId],
     () => fetchCoinTickers(coinId)
   );
-  console.log(infoData);
+
+  const onBack = () => {
+    route("/");
+  };
+
   const loading = infoLoading || tickersLoading;
 
   return (
     <Container>
+      <Back onClick={onBack}>Back</Back>
       <Header>
         <Title>
           {state?.name
@@ -212,7 +233,7 @@ function Coin() {
               <Link to={`chart`}>Chart</Link>
             </Tab>
           </Tabs>
-          <Outlet />
+          <Outlet context={{coinId}} />
         </>
       )}
     </Container>

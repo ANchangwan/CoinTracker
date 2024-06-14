@@ -26,7 +26,7 @@ const ConisList = styled.ul``;
 
 const Coin = styled.li`
   background-color: white;
-  color: ${(props) => props.theme.bgColor};
+  color: #2f3640;
   margin-bottom: 10px;
   padding: 20px 30px;
   border-radius: 10px;
@@ -61,7 +61,9 @@ interface ICoin {
 }
 
 function Coins() {
-  const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
+  const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins, {
+    staleTime: 1000000,
+  });
 
   return (
     <Container>

@@ -1,9 +1,10 @@
-import { RouterProvider } from "react-router-dom";
+import { RouterProvider, useParams } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components";
 import { router } from "./routes/router";
 import { createGlobalStyle } from "styled-components";
-import { theme } from "./theme";
+import { LightMode, DarkMode } from "./theme";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { useState } from "react";
 
 const GlobalStyles = createGlobalStyle`
   
@@ -66,10 +67,29 @@ a{
 
 `;
 
+export const Btn = styled.button`
+  position: relative;
+  background-color: ${(props) => props.theme.bgColor};
+  color: ${(props) => props.theme.textColor};
+  padding: 10px 20px;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 15px;
+  margin: 20px;
+  left: 90%;
+`;
+
 function App() {
+  const [mode, setMode] = useState(false);
+  const onClick = () => {
+    setMode((mode) => !mode);
+  };
+
   return (
     <>
-      <ThemeProvider theme={theme}>
+      <Btn onClick={onClick}>{mode ? "LightMode" : "DarkMode"}</Btn>
+
+      <ThemeProvider theme={mode ? DarkMode : LightMode}>
         <GlobalStyles />
         <RouterProvider router={router} />
         <ReactQueryDevtools initialIsOpen={true} />
