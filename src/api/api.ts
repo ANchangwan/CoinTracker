@@ -17,7 +17,6 @@ export function fetchCoinTickers(coinId: string | undefined) {
 }
 
 export default function fetchCoinsHistory(coinId: string | undefined) {
-
   return fetch(
     `https://ohlcv-api.nomadcoders.workers.dev/?coinId=${coinId}`
   ).then((response) => response.json());

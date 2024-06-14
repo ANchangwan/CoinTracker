@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import { Helmet } from "react-helmet";
 import {
   Link,
   Outlet,
@@ -10,13 +11,18 @@ import {
 } from "react-router-dom";
 import { styled } from "styled-components";
 import { fetchCoinInfo, fetchCoinTickers } from "../api/api";
-import { Btn } from "../App";
 
 const Container = styled.div`
   padding: 0px 20px;
   max-width: 480px;
   margin: 0 auto;
 `;
+const Wrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: end;
+`;
+
 const Tabs = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -89,7 +95,6 @@ const Title = styled.h1`
 `;
 
 const Back = styled.button`
-  position: relative;
   background-color: ${(props) => props.theme.bgColor};
   color: ${(props) => props.theme.textColor};
   padding: 10px 40px;
@@ -97,8 +102,6 @@ const Back = styled.button`
   font-weight: 600;
   border-radius: 15px;
   margin: 20px;
-  right: -224%;
-  top: -30px;
 `;
 
 interface RouteParams {
@@ -129,7 +132,7 @@ interface InfoData {
   last_data_at: string;
 }
 
-interface PriceData {
+export interface PriceData {
   id: string;
   name: string;
   symbol: string;
@@ -167,6 +170,10 @@ function Coin() {
   const { coinId } = useParams<RouteParams>();
   const { state } = useLocation();
   const route = useNavigate();
+  const onBack = () => {
+    route("/");
+  };
+
   const chartMatch = useMatch("/:coinId/chart");
   const priceMatch = useMatch("/:coinId/price");
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
@@ -178,15 +185,24 @@ function Coin() {
     () => fetchCoinTickers(coinId)
   );
 
-  const onBack = () => {
-    route("/");
-  };
-
   const loading = infoLoading || tickersLoading;
 
   return (
     <Container>
-      <Back onClick={onBack}>Back</Back>
+      <Helmet>
+        <title>
+          {" "}
+          {state?.name
+            ? state.name
+            : infoLoading
+            ? "Loading..."
+            : infoData?.name}
+        </title>
+      </Helmet>
+      <Wrapper>
+        <Back onClick={onBack}>Back</Back>
+      </Wrapper>
+
       <Header>
         <Title>
           {state?.name
@@ -210,8 +226,8 @@ function Coin() {
               <span>{infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Open Source : </span>
-              <span>{infoData?.open_source ? "Yes" : "No"}</span>
+              <span>Price : </span>
+              <span>{tickersData?.quotes.USD.price.toFixed(3)}</span>
             </OverviewItem>
           </CoinInfo>
           <Description>{infoData?.description}</Description>
@@ -233,7 +249,7 @@ function Coin() {
               <Link to={`chart`}>Chart</Link>
             </Tab>
           </Tabs>
-          <Outlet context={{coinId}} />
+          <Outlet context={{ coinId }} />
         </>
       )}
     </Container>

@@ -1,4 +1,4 @@
-import { RouterProvider, useParams } from "react-router-dom";
+import { RouterProvider, useLocation, useNavigate } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components";
 import { router } from "./routes/router";
 import { createGlobalStyle } from "styled-components";
@@ -67,8 +67,7 @@ a{
 
 `;
 
-export const Btn = styled.button`
-  position: relative;
+const Btn = styled.button`
   background-color: ${(props) => props.theme.bgColor};
   color: ${(props) => props.theme.textColor};
   padding: 10px 20px;
@@ -76,23 +75,38 @@ export const Btn = styled.button`
   font-weight: 600;
   border-radius: 15px;
   margin: 20px;
-  left: 90%;
 `;
-
+const Back = styled.button`
+  background-color: ${(props) => props.theme.bgColor};
+  color: ${(props) => props.theme.textColor};
+  padding: 10px 40px;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 15px;
+  margin: 20px;
+`;
+const Navigation = styled.header`
+  display: flex;
+  justify-content: end;
+`;
 function App() {
+  // const location = useLocation();
   const [mode, setMode] = useState(false);
   const onClick = () => {
     setMode((mode) => !mode);
   };
+  
 
   return (
     <>
-      <Btn onClick={onClick}>{mode ? "LightMode" : "DarkMode"}</Btn>
+      <Navigation>
+        
+        <Btn onClick={onClick}>{mode ? "LightMode" : "DarkMode"}</Btn>
+      </Navigation>
 
       <ThemeProvider theme={mode ? DarkMode : LightMode}>
         <GlobalStyles />
         <RouterProvider router={router} />
-        <ReactQueryDevtools initialIsOpen={true} />
       </ThemeProvider>
     </>
   );
