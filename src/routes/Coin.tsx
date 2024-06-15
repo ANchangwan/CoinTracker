@@ -184,6 +184,7 @@ function Coin() {
     ["tickers", coinId],
     () => fetchCoinTickers(coinId)
   );
+  console.log();
 
   const loading = infoLoading || tickersLoading;
 
@@ -191,7 +192,6 @@ function Coin() {
     <Container>
       <Helmet>
         <title>
-          {" "}
           {state?.name
             ? state.name
             : infoLoading
@@ -227,7 +227,7 @@ function Coin() {
             </OverviewItem>
             <OverviewItem>
               <span>Price : </span>
-              <span>{tickersData?.quotes.USD.price.toFixed(3)}</span>
+              <span>{tickersData?.quotes?.USD.price.toFixed(3)}</span>
             </OverviewItem>
           </CoinInfo>
           <Description>{infoData?.description}</Description>
