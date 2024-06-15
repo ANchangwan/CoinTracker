@@ -5,6 +5,7 @@ import Coin from "./Coin";
 import Chart from "./Chart";
 import Price from "./Price";
 
+
 export const router = createBrowserRouter([
   {
     path: "/",

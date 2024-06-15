@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "../api/api";
 import { Helmet } from "react-helmet";
@@ -61,7 +61,12 @@ interface ICoin {
   type: string;
 }
 
+interface IMode {
+  onClick: () => void;
+}
+
 function Coins() {
+
   const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins, {
     staleTime: 1000000,
   });
@@ -71,6 +76,7 @@ function Coins() {
       <Header>
         <Helmet>코인</Helmet>
       </Header>
+      
       {isLoading ? (
         "loading..."
       ) : (

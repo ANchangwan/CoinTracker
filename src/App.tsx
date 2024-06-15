@@ -5,6 +5,8 @@ import { createGlobalStyle } from "styled-components";
 import { LightMode, DarkMode } from "./theme";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
+import { isDarkAtom } from "./atom";
 
 const GlobalStyles = createGlobalStyle`
   
@@ -90,21 +92,15 @@ const Navigation = styled.header`
   justify-content: end;
 `;
 function App() {
-  // const location = useLocation();
-  const [mode, setMode] = useState(false);
-  const onClick = () => {
-    setMode((mode) => !mode);
-  };
-  
+  const isDark = useRecoilValue(isDarkAtom);
 
   return (
     <>
       <Navigation>
-        
-        <Btn onClick={onClick}>{mode ? "LightMode" : "DarkMode"}</Btn>
+        <Btn>{isDark ? "LightMode" : "DarkMode"}</Btn>
       </Navigation>
 
-      <ThemeProvider theme={mode ? DarkMode : LightMode}>
+      <ThemeProvider theme={isDark ? DarkMode : LightMode}>
         <GlobalStyles />
         <RouterProvider router={router} />
       </ThemeProvider>

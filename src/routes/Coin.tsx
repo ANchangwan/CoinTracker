@@ -7,6 +7,7 @@ import {
   useLocation,
   useMatch,
   useNavigate,
+  useOutletContext,
   useParams,
 } from "react-router-dom";
 import { styled } from "styled-components";
@@ -165,8 +166,12 @@ export interface PriceData {
     };
   };
 }
+interface IMode {
+  onClick: () => void;
+}
 
 function Coin() {
+
   const { coinId } = useParams<RouteParams>();
   const { state } = useLocation();
   const route = useNavigate();
@@ -184,7 +189,6 @@ function Coin() {
     ["tickers", coinId],
     () => fetchCoinTickers(coinId)
   );
-  console.log();
 
   const loading = infoLoading || tickersLoading;
 
@@ -200,6 +204,7 @@ function Coin() {
         </title>
       </Helmet>
       <Wrapper>
+        
         <Back onClick={onBack}>Back</Back>
       </Wrapper>
 
