@@ -3,21 +3,21 @@ import { useSetRecoilState } from "recoil";
 import { toDoState } from "./atom";
 
 interface IForm {
-  toDo: string;
+  ToDo: string;
 }
 function CreatedToDo() {
   const setToDos = useSetRecoilState(toDoState);
   const { register, handleSubmit, setValue } = useForm<IForm>();
-  const handleVaild = ({ toDo }: IForm) => {
+  const handleVaild = ({ ToDo }: IForm) => {
     setToDos((oldToDos) => [
-      { text: toDo, id: Date.now(), categroy: "ToDo" },
+      { text: ToDo, id: Date.now(), category: "To_Do" },
       ...oldToDos,
     ]);
-    setValue("toDo", "");
+    setValue("ToDo", "");
   };
   return (
     <form onSubmit={handleSubmit(handleVaild)}>
-      <input {...register("toDo", { required: "write todo" })} />
+      <input {...register("ToDo", { required: "write todo" })} />
       <button>Add</button>
     </form>
   );
