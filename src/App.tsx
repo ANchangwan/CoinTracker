@@ -1,12 +1,5 @@
-import { RouterProvider, useLocation, useNavigate } from "react-router-dom";
-import styled, { ThemeProvider } from "styled-components";
-import { router } from "./routes/router";
 import { createGlobalStyle } from "styled-components";
-import { LightMode, DarkMode } from "./theme";
-import { ReactQueryDevtools } from "react-query/devtools";
-import { useState } from "react";
-import { useRecoilValue } from "recoil";
-import { isDarkAtom } from "./atom";
+import ToDoList from "./components/ToDoList";
 
 const GlobalStyles = createGlobalStyle`
   
@@ -69,41 +62,11 @@ a{
 
 `;
 
-const Btn = styled.button`
-  background-color: ${(props) => props.theme.bgColor};
-  color: ${(props) => props.theme.textColor};
-  padding: 10px 20px;
-  font-size: 18px;
-  font-weight: 600;
-  border-radius: 15px;
-  margin: 20px;
-`;
-const Back = styled.button`
-  background-color: ${(props) => props.theme.bgColor};
-  color: ${(props) => props.theme.textColor};
-  padding: 10px 40px;
-  font-size: 18px;
-  font-weight: 600;
-  border-radius: 15px;
-  margin: 20px;
-`;
-const Navigation = styled.header`
-  display: flex;
-  justify-content: end;
-`;
 function App() {
-  const isDark = useRecoilValue(isDarkAtom);
-
   return (
     <>
-      <Navigation>
-        <Btn>{isDark ? "LightMode" : "DarkMode"}</Btn>
-      </Navigation>
-
-      <ThemeProvider theme={isDark ? DarkMode : LightMode}>
-        <GlobalStyles />
-        <RouterProvider router={router} />
-      </ThemeProvider>
+      <GlobalStyles />
+      <ToDoList />
     </>
   );
 }
