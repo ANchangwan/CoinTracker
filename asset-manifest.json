@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/recoilToDoList/static/js/main.cabb8da6.js",
-    "index.html": "/recoilToDoList/index.html",
-    "main.cabb8da6.js.map": "/recoilToDoList/static/js/main.cabb8da6.js.map"
+    "main.js": "/CoinTracker/static/js/main.bda67a1c.js",
+    "index.html": "/CoinTracker/index.html",
+    "main.bda67a1c.js.map": "/CoinTracker/static/js/main.bda67a1c.js.map"
   },
   "entrypoints": [
-    "static/js/main.cabb8da6.js"
+    "static/js/main.bda67a1c.js"
   ]
 }
